@@ -2,6 +2,8 @@ import LoginForm from "@/components/auth/login-form";
 import { authIsNotRequired } from "@/lib/auth-utils";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 const Login = async() => {
 
   await authIsNotRequired()

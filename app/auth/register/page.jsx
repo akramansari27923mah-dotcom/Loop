@@ -2,6 +2,9 @@ import RegisterForm from "@/components/auth/Register-form";
 import { authIsNotRequired } from "@/lib/auth-utils";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
+
 const Register = async () => {
   await authIsNotRequired();
 
