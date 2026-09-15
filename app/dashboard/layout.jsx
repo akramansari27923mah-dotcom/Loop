@@ -1,4 +1,4 @@
-import NavbarDashboard from "@/components/dashboard/Navbar";
+import Sidebar from "@/components/dashboard/Sidebar";
 import { getUser } from "@/lib/get-session";
 import { Poppins } from "next/font/google";
 import { redirect } from "next/navigation";
@@ -19,7 +19,7 @@ const layoutDashboard = async ({ children }) => {
 
   return (
     <div className={`flex ${poppins.className}`}>
-      <NavbarDashboard session={session} />
+      <Sidebar session={session} />
       <div className="w-full">{children}</div>
     </div>
   );

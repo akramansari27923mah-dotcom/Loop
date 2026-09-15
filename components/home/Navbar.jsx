@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, Plus, X } from "lucide-react";
 import { useState } from "react";
 import { navLinks } from "@/data/links";
 import { authClient } from "@/lib/auth-client";
@@ -77,12 +77,14 @@ const Navbar = ({ session }) => {
             </Link>
           )}
 
-          <Link
-            href={`${session ? "/create-workspace" : "/auth/register"}`}
-            className="flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-500 to-blue-600 px-6 py-3 text-sm font-semibold transition hover:scale-105">
-            Get Started
-            <ArrowRight size={16} />
-          </Link>
+          {session?.user?.role === "admin" && (
+            <Link
+              href={`${session ? "/create-workspace" : "/auth/register"}`}
+              className="flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-500 to-blue-600 px-6 py-3 text-sm font-semibold transition hover:scale-105">
+              <Plus size={18} />
+              Create Workspace
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}

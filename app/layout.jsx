@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { EveryProvider } from "@/context/UseEverywhere";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,8 +29,10 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${poppins.className} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col" cz-shortcut-listen="true">
-        <Toaster richColors closeButton position="top-right" />
-        {children}
+        <EveryProvider>
+          <Toaster richColors closeButton position="top-right" />
+          {children}
+        </EveryProvider>
       </body>
     </html>
   );
