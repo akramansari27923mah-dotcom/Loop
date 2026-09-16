@@ -37,6 +37,9 @@ export const POST = async (req) => {
       invitationToken: token,
     });
 
+    console.log("member", member);
+    
+
     if (!member) {
       return res.json(
         {
@@ -44,6 +47,16 @@ export const POST = async (req) => {
           success: false,
         },
         { status: 404 },
+      );
+    }
+
+    if (member.invitationToken !== token) {
+      return res.json(
+        {
+          message: "Unmatched Token",
+          success: false,
+        },
+        { status: 400 },
       );
     }
 
@@ -64,16 +77,6 @@ export const POST = async (req) => {
           success: false,
         },
         { status: 410 },
-      );
-    }
-
-    if (member.email.toLowerCase() !== session.user.email.toLowerCase()) {
-      return res.json(
-        {
-          message: "Wrong user",
-          success: false,
-        },
-        { status: 403 },
       );
     }
 

@@ -4,13 +4,13 @@ const memberSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
-      required: false,
       default: null,
     },
 
     workspaceId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: "Workspace",
     },
 
     role: {
@@ -21,8 +21,9 @@ const memberSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      unique: true,
       required: true,
+      lowercase: true,
+      trim: true,
     },
 
     status: {
@@ -47,6 +48,8 @@ const memberSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+memberSchema.index({ email: 1, workspaceId: 1 }, { unique: true });
 
 const memberModel =
   mongoose.models.Member || mongoose.model("Member", memberSchema);

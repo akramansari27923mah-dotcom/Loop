@@ -2,6 +2,30 @@ import React from "react";
 import { CONNECT_DB } from "@/lib/mongodb";
 import memberModel from "@/schemas/memberSchema";
 import InvitationCard from "@/components/InvitationPage";
+
+
+export const metadata = {
+  title: "You're Invited | LOOP",
+  description:
+    "You've been invited to join a LOOP workspace — an AI-powered customer feedback intelligence platform for teams and businesses.",
+  keywords: [
+    "LOOP",
+    "customer feedback",
+    "customer feedback management",
+    "feedback intelligence",
+    "AI customer feedback",
+    "customer insights",
+    "feedback analytics",
+    "team collaboration",
+    "workspace invitation",
+    "AI analytics",
+  ],
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 const Invitaion = async ({ params }) => {
   await CONNECT_DB();
   const { token } = await params;

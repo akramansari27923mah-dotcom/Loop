@@ -54,11 +54,14 @@ export const POST = async (req) => {
       );
     }
 
-    const checkDuplicateEmail = await memberModel.findOne({
+    const members = await memberModel.findOne({
+      workspaceId: session.user.workspaceId,
       email: email,
     });
 
-    if (checkDuplicateEmail) {
+    console.log("Member", members);
+
+    if (members) {
       return res.json(
         {
           message: "A member with this email already exists.",
