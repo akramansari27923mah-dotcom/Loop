@@ -48,7 +48,7 @@ const roles = [
   },
 ];
 
-const CreateMemberForm = () => {
+const CreateMemberForm = ({update, setUpdate}) => {
   const forms = useForm({
     resolver: zodResolver(memberSchema),
     defaultValues: {
@@ -66,7 +66,6 @@ const CreateMemberForm = () => {
     setSuccess("");
     try {
       const { data } = await api.post("/invitationMember", value);
-      console.log(data);
 
       if (data?.success) {
         setSuccess("Invitation sent successfully.");
@@ -74,10 +73,10 @@ const CreateMemberForm = () => {
     } catch (err) {
       console.error(err.message);
       console.log(err.response.data?.message);
-
       setError(err.response?.data?.message);
     } finally {
       setLoader(false);
+      setUpdate(!update)
     }
   };
 
@@ -89,7 +88,7 @@ const CreateMemberForm = () => {
             <Button
               size="lg"
               className={
-                "bg-indigo-600 hover:bg-indigo-400 cursor-pointer hover:scale-105 transition-all duration-300"
+                "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition-all hover:bg-indigo-500 hover:shadow-indigo-500/30 cursor-pointer"
               }>
               <UserPlus size={17} />
               Invite Member

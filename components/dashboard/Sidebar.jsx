@@ -16,7 +16,7 @@ export default function Sidebar({ session }) {
   return (
     <>
       <aside
-        className={`flex h-screen md:relative fixed top-0 left-0  flex-col ${openSidebar && "border-r"} border-white/10 bg-linear-to-b from-[#050816] via-[#0a0f2c] to-[#111827]  shadow-2xl shadow-blue-950/30 overflow-hidden transition-all duration-300`}
+        className={`flex h-screen z-100 md:relative fixed top-0 left-0  flex-col ${openSidebar && "border-r"} border-white/10 bg-linear-to-b from-[#050816] via-[#0a0f2c] to-[#111827]  shadow-2xl shadow-blue-950/30 overflow-hidden transition-all duration-300`}
         style={{
           width: openSidebar ? "300px" : "0px",
           padding: openSidebar ? "16px" : "0px",
@@ -56,7 +56,7 @@ export default function Sidebar({ session }) {
 
           {sidebarRoutes?.map((item) => {
             const Icon = item.icon;
-
+            
             const isActive =
               pathname === item.href ||
               (item.href !== "/dashboard" && pathname.startsWith(item.href));

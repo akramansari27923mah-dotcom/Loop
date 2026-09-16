@@ -13,7 +13,7 @@ const NavebarDashoard = ({ session }) => {
 
   return (
     <div>
-      <nav className="flex justify-between items-center gap-3 h-18 px-5 bg-linear-to-b from-[#050816] via-[#0a0f2c] to-[#111827] p-4 shadow-2xl shadow-blue-950/30">
+      <nav className="flex justify-between  items-center gap-3 h-18 px-5 bg-linear-to-b from-[#050816] via-[#0a0f2c] to-[#111827] p-4 shadow-2xl shadow-blue-950/30">
         {!openSidebar && (
           <div
             onClick={() => setOpenSidebar(!openSidebar)}

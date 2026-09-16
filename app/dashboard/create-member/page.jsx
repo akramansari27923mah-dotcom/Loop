@@ -1,4 +1,5 @@
 import Members from "@/components/dashboard/Members";
+import { getUser } from "@/lib/auth-utils";
 import React from "react";
 
 export const metadata = {
@@ -15,10 +16,13 @@ export const metadata = {
   ],
 };
 
+const session = await getUser()
+
+
 const CreateMember = async () => {
   return (
     <div>
-      <Members />
+      <Members session={session} />
     </div>
   );
 };
