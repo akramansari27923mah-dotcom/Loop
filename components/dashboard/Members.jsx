@@ -16,13 +16,16 @@ import { api } from "@/lib/axios";
 import { dateFormater } from "@/lib/formateDate";
 import { Button } from "../ui/button";
 import DeleteMember from "../DeleteMember";
-import { showSuccess } from "@/lib/toaster";
+import { showError, showSuccess } from "@/lib/toaster";
+import EditMember from "../EditMember";
 
 const MembersPage = ({ session }) => {
-  const { openSidebar, setOpenSidebar } = useEveryWhere();
+  const { openSidebar, setOpenSidebar, editRole, setEditRole } =
+    useEveryWhere();
   const [members, setMembers] = useState([]);
   const [loader, setLoader] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [editLoader, seteEditLoader] = useState(false);
 
   if (session?.user?.role !== "admin") {
     return (
@@ -72,6 +75,23 @@ const MembersPage = ({ session }) => {
     }
   };
 
+  const editMember = async (id) => {
+    try {
+      seteEditLoader(true);
+      const { data } = await api.patch(`/member/editMember/${id}`, {
+        role: editRole,
+      });
+
+      if (data?.success) return showSuccess("Member updated successfully.");
+    } catch (err) {
+      console.error(err?.message || "Somthing went wrong!");
+      showError(err?.response?.data?.message);
+    } finally {
+      seteEditLoader(false);
+      setUpdate(!update);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-linear-to-br from-[#020617] via-[#0a0f2c] to-[#111827]">
       <nav className="flex px-5 sticky top-0 justify-between items-center h-20 border-b border-gray-800">
@@ -108,9 +128,7 @@ const MembersPage = ({ session }) => {
         ) : (
           <RotateCcw />
         )}
-        {
-          loader ? "Refreshing..." : "Refresh"
-        }
+        {loader ? "Refreshing..." : "Refresh"}
       </Button>
 
       {loader ? (
@@ -217,12 +235,24 @@ const MembersPage = ({ session }) => {
                       {dateFormater(items.createdAt)}
                     </td>
 
-                    <td className="px-6 py-5 text-sm text-slate-400 ">
-                      <DeleteMember
-                        deleteMember={() => deleteMember(items._id)}
-                        loader={loader}
-                      />
-                    </td>
+                    <div className="flex py-5 justify-center items-center">
+                      <td className=" text-sm text-slate-400 ">
+                        <DeleteMember
+                          deleteMember={() => deleteMember(items._id)}
+                          loader={loader}
+                        />
+                      </td>
+
+                      <td className=" text-sm text-slate-400 ">
+                        <EditMember
+                          editMember={() => editMember(items._id)}
+                          editLoader={loader}
+                          member={items}
+                          editRole={editRole}
+                          setEditRole={setEditRole}
+                        />
+                      </td>
+                    </div>
                   </tr>
                 </tbody>
               ))}

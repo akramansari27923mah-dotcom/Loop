@@ -1,19 +1,20 @@
-"use client"
+"use client";
 
-import React from 'react'
+import React from "react";
 import { useContext, createContext, useState } from "react";
 
-const EveryWhere = createContext()
+const EveryWhere = createContext();
 
-export const EveryProvider = ({children}) => {
+export const EveryProvider = ({ children }) => {
+  const [openSidebar, setOpenSidebar] = useState(true);
+  const [editRole, setEditRole] = useState("");
 
-  const [openSidebar, setOpenSidebar] = useState(true)
-    
   return (
-    <EveryWhere.Provider value={{openSidebar, setOpenSidebar}}>
-        {children}
+    <EveryWhere.Provider
+      value={{ openSidebar, setOpenSidebar, editRole, setEditRole }}>
+      {children}
     </EveryWhere.Provider>
-  )
-}
+  );
+};
 
-export const useEveryWhere = () => useContext(EveryWhere)
+export const useEveryWhere = () => useContext(EveryWhere);
