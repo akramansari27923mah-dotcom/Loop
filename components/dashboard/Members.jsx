@@ -6,8 +6,8 @@ import CreateMemberForm from "./CreateMemberForm";
 import {
   LoaderCircle,
   Menu,
+  RefreshCw,
   RotateCcw,
-  UserPlus,
   UsersRound,
 } from "lucide-react";
 import { useEveryWhere } from "@/context/UseEverywhere";
@@ -101,10 +101,16 @@ const MembersPage = ({ session }) => {
         onClick={() => setUpdate(!update)}
         size="lg"
         className={
-          "fixed top-23 right-4 hover:scale-105 transition-all duration-300 cursor-pointer"
+          "fixed top-23 bg-indigo-600 hover:bg-indigo-500 right-4 hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg shadow-indigo-500/20"
         }>
-        <RotateCcw />
-        Refresh
+        {loader ? (
+          <RefreshCw className="h-5 w-5 animate-spin text-white" />
+        ) : (
+          <RotateCcw />
+        )}
+        {
+          loader ? "Refreshing..." : "Refresh"
+        }
       </Button>
 
       {loader ? (

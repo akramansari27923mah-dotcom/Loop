@@ -4,7 +4,7 @@ import memberModel from "@/schemas/memberSchema";
 import { CONNECT_DB } from "@/lib/mongodb";
 import { generateToken } from "@/lib/tokenGenerate";
 import { config } from "@/lib/config";
-import { sendInvitationEmail } from "@/lib/auth-utils";
+import { sendInvitationEmail } from "@/lib/nodemailer";
 
 export const POST = async (req) => {
   try {
@@ -59,7 +59,6 @@ export const POST = async (req) => {
       email: email,
     });
 
-    console.log("Member", members);
 
     if (members) {
       return res.json(

@@ -20,7 +20,6 @@ const InvitationCard = ({ member, token }) => {
   const [loader, setLoader] = useState(false);
   const route = useRouter();
   const handleAccept = async () => {
-      13428709
     try {
       setLoader(true);
       setSuccess("");
