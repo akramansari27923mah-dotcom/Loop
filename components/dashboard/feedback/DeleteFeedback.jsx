@@ -12,17 +12,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 
-const DeleteMember = ({ deleteMember, loader }) => {
+const DeleteFeedback = ({ deleteFeedback, loader }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger
         render={
           <Button
             variant="ghost"
-            className="text-red-400 hover:bg-red-500/10 hover:text-red-300">
+            className="text-red-400 cursor-pointer hover:bg-red-500/10 hover:text-red-300">
             <Trash2 className=" h-4 w-4" />
           </Button>
         }
@@ -31,11 +31,11 @@ const DeleteMember = ({ deleteMember, loader }) => {
       <AlertDialogContent className="border border-white/10 bg-[#0b1020] text-white shadow-2xl shadow-black/40">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-lg font-semibold text-white">
-            Delete this member?
+            Delete this feedback?
           </AlertDialogTitle>
 
           <AlertDialogDescription className="text-slate-400">
-            This action will permanently remove the member from your workspace.
+            This action will permanently remove the feedback from your workspace.
             This cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -46,7 +46,7 @@ const DeleteMember = ({ deleteMember, loader }) => {
           </AlertDialogCancel>
 
           <AlertDialogAction
-            onClick={deleteMember}
+            onClick={deleteFeedback}
             className=" bg-red-500 text-white hover:bg-red-600 cursor-pointer"
             disabled={loader}>
             {loader ? (
@@ -80,4 +80,4 @@ const DeleteMember = ({ deleteMember, loader }) => {
   );
 };
 
-export default DeleteMember;
+export default DeleteFeedback;

@@ -54,37 +54,39 @@ export default function Sidebar({ session }) {
             MAIN MENU
           </p>
 
-          {sidebarRoutes?.map((item) => {
-            const Icon = item.icon;
-            
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/dashboard" && pathname.startsWith(item.href));
+          <div className="space-y-1 overflow-y-auto h-96 hiden-scrollbar">
+            {sidebarRoutes?.map((item) => {
+              const Icon = item.icon;
 
-            return (
-              <Link
-                href={item.href}
-                key={item.name}
-                className={`group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 ${
-                  isActive
-                    ? "bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/25"
-                    : "text-gray-400 hover:bg-white/5 hover:text-white"
-                }`}>
-                <Icon
-                  size={20}
-                  className={`transition-transform duration-300 group-hover:scale-110  ${
-                    isActive ? "text-white" : "text-blue-400"
-                  }`}
-                />
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/dashboard" && pathname.startsWith(item.href));
 
-                <span className="text-nowrap">{item.name}</span>
+              return (
+                <Link
+                  href={item.href}
+                  key={item.name}
+                  className={`group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/25"
+                      : "text-gray-400 hover:bg-white/5 hover:text-white"
+                  }`}>
+                  <Icon
+                    size={20}
+                    className={`transition-transform duration-300 group-hover:scale-110  ${
+                      isActive ? "text-white" : "text-blue-400"
+                    }`}
+                  />
 
-                {isActive && (
-                  <div className="ml-auto h-2 w-2 rounded-full bg-white shadow-lg shadow-white/70" />
-                )}
-              </Link>
-            );
-          })}
+                  <span className="text-nowrap">{item.name}</span>
+
+                  {isActive && (
+                    <div className="ml-auto h-2 w-2 rounded-full bg-white shadow-lg shadow-white/70" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
 
         {/* Bottom User Section */}
