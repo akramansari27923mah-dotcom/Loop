@@ -103,7 +103,8 @@ export const POST = async (req) => {
 
 export const GET = async (req) => {
   try {
-    await CONNECT_DB()
+    await CONNECT_DB();
+
     const session = await getUser();
 
     if (!session?.user) {
@@ -126,18 +127,40 @@ export const GET = async (req) => {
       );
     }
 
+    const { searchParams } = new URL(req.url);
+
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const total = await feedbackModel.countDocuments({
+      workspaceId: session.user.workspaceId,
+    });
+
+    const totalPages = Math.ceil(total / limit);
+
     const feedback = await feedbackModel
       .find({
         workspaceId: session.user.workspaceId,
       })
-      .sort({ createdAt: -1 });
-
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
     return res.json(
       {
         message: "Feedback fetched successfully",
         success: true,
-        feedback
+        feedback,
+        pagination: {
+          page: page,
+          limit: limit,
+          total: total,
+          totalPages: totalPages,
+          hasNextPage: page < totalPages,
+          hasPreviousPage: page > 1,
+        },
       },
       { status: 200 },
     );

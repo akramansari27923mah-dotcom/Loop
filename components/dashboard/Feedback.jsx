@@ -16,12 +16,18 @@ import DeleteFeedback from "./feedback/DeleteFeedback";
 import { showSuccess } from "@/lib/toaster";
 import { useEveryWhere } from "@/context/UseEverywhere";
 import EditFeedback from "./feedback/EditFeedback";
+import PaginationPage from "./feedback/Pagination";
 
 const FeedbackPage = ({ session }) => {
   const [feedback, setFeedback] = useState([]);
   const [update, setUpdate] = useState(false);
   const [loader, setLoader] = useState(false);
   const [editLoader, setEditLoader] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState([]);
+  const [total, setTotal] = useState("");
+  const [hasNextPage, setHasNextPage] = useState("");
+  const [hasPreviousPage, setHasPreviousPage] = useState("");
   const { openSidebar, setOpenSidebar, editFeedbackData, setEditFeedbackData } =
     useEveryWhere();
 
@@ -29,11 +35,17 @@ const FeedbackPage = ({ session }) => {
     const getFeedback = async () => {
       try {
         setLoader(true);
-        const { data } = await api.get("/feedback");
+        const { data } = await api.get(`/feedback?page=${page}&limit=10`);
+        console.log(data);
+
         if (!data.success) {
           throw new Error(data.message);
         }
-        setFeedback(data.feedback);
+        setFeedback(data?.feedback);
+        setTotalPage([data?.pagination?.totalPages]);
+        setTotal(data?.pagination?.total);
+        setHasNextPage(data?.pagination?.hasNextPage);
+        setHasPreviousPage(data?.pagination?.hasPreviousPage);
       } catch (err) {
         console.error(err.message);
       } finally {
@@ -42,7 +54,7 @@ const FeedbackPage = ({ session }) => {
     };
 
     getFeedback();
-  }, [update]);
+  }, [update, page]);
 
   const deleteFeedback = async (feedbackId) => {
     try {
@@ -100,7 +112,7 @@ const FeedbackPage = ({ session }) => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-[#020617] via-[#0a0f2c] to-[#111827]">
-      <nav className="flex px-5 sticky top-0 justify-between items-center h-20 border-b border-gray-800">
+      <nav className="flex px-5 sticky top-0 z-50 backdrop-blur-md justify-between items-center h-20 border-b border-gray-800">
         <div className="flex items-center gap-4">
           {!openSidebar && (
             <div
@@ -112,8 +124,11 @@ const FeedbackPage = ({ session }) => {
 
           <div className="text-white text-2xl">
             <h1 className="font-semibold">Feedback</h1>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-400 hidden md:block">
               View and manage all feedback from your workspace.
+            </p>
+            <p className="text-sm text-gray-400 md:hidden">
+              View and manage all feedback.
             </p>
           </div>
         </div>
@@ -134,7 +149,7 @@ const FeedbackPage = ({ session }) => {
         onClick={() => setUpdate(!update)}
         size="lg"
         className={
-          "fixed top-23 bg-indigo-600 hover:bg-indigo-500 right-4 hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg shadow-indigo-500/20"
+          "fixed top-23 bg-indigo-600 z-80 hover:bg-indigo-500 right-4 hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg shadow-indigo-500/20"
         }>
         {loader ? (
           <RefreshCw className="h-5 w-5 animate-spin text-white" />
@@ -144,7 +159,7 @@ const FeedbackPage = ({ session }) => {
         {loader ? "Refreshing..." : "Refresh"}
       </Button>
 
-      <div className="p-4 mt-5">
+      <div className="p-4 mt-10 ">
         {loader ? (
           <div className="flex min-h-75 items-center justify-center">
             <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/3 px-10 py-8 shadow-2xl shadow-indigo-500/5 backdrop-blur-xl">
@@ -198,7 +213,7 @@ const FeedbackPage = ({ session }) => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {feedback.map((item) => (
+            {feedback.map((item, ind) => (
               <div
                 key={item._id}
                 className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0f172a] p-5 shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-blue-950/30">
@@ -209,7 +224,7 @@ const FeedbackPage = ({ session }) => {
                 <div className="relative flex items-start justify-between gap-3">
                   <div className="min-w-0 flex items-center gap-2">
                     <div className="w-10 h-10 rounded-xl bg-linear-to-br from-indigo-500 to-blue-600 text-white flex items-center justify-center font-semibold shadow-lg shadow-indigo-500/20">
-                      {feedback?.length}
+                      {ind + 1}
                     </div>
 
                     <div>
@@ -308,11 +323,29 @@ const FeedbackPage = ({ session }) => {
                       loader={loader}
                     />
                   </div>
-                )       }
+                )}
               </div>
             ))}
           </div>
         )}
+      </div>
+
+      <div className="fixed bottom-5 right-5 text-white">
+        <PaginationPage
+          totalPage={totalPage}
+          setPage={setPage}
+          page={page}
+          hasPreviousPage={hasPreviousPage}
+          hasNextPage={hasNextPage}
+        />
+      </div>
+
+      <div className="fixed bottom-5 left-10 hidden md:block rounded-lg border border-slate-800 bg-slate-900/90 px-4 py-2 text-sm text-slate-400 shadow-lg backdrop-blur-md">
+        Showing{" "}
+        <span className="font-medium text-white">
+          {(page - 1) * 10 + 1}–{Math.min(page * 10, total)}
+        </span>{" "}
+        of <span className="font-medium text-white">{total}</span> feedback
       </div>
     </div>
   );
